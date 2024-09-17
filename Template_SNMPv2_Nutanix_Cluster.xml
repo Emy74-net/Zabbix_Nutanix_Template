@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>7.0</version>
+    <template_groups>
+        <template_group>
+            <uuid>7df96b18c230490a9a0a9e2307226338</uuid>
+            <name>Templates</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>e9bc0e0a515c4265913120848c1a7b23</uuid>
+            <template>Nutanix Cluster</template>
+            <name>Nutanix Cluster</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>45e6a94d20874e7888d48b9c3a39b2fd</uuid>
+                    <name>Cluster IO Bandwidth</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.508.0</snmp_oid>
+                    <key>clusterIOBandwidth</key>
+                    <delay>60s</delay>
+                    <units>bps</units>
+                    <description>IO Bandwidth</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>1d38071372584cba9b85a7f7ed3f0489</uuid>
+                    <name>Cluster IOPS</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.506.0</snmp_oid>
+                    <key>clusterIops</key>
+                    <delay>60s</delay>
+                    <units>iops</units>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>05100efa9ea94aadaabe53afc2f39e3b</uuid>
+                    <name>Cluster Latency</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.507.0</snmp_oid>
+                    <key>clusterLatency</key>
+                    <delay>60s</delay>
+                    <units>ms</units>
+                    <description>IO Bandwidth</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>b89d92fe14e7496abc3f6f27db99a90e</uuid>
+                            <expression>min(/Nutanix Cluster/clusterLatency,5m)&gt;20000</expression>
+                            <name>Nutanix Cluster storage latency is greater than 10 ms for 5 minutes</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>59e32069bb1b44e2971e52c3aaf4b1e4</uuid>
+                    <name>Cluster Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.501.0</snmp_oid>
+                    <key>clusterName</key>
+                    <delay>24h</delay>
+                    <value_type>TEXT</value_type>
+                    <trends>0</trends>
+                    <description>Cluster Name</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>73c264167dea4845bbac215af4a451db</uuid>
+                    <name>Cluster Total Storage Capacity</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.504.0</snmp_oid>
+                    <key>clusterTotalStorageCapacity</key>
+                    <delay>24h</delay>
+                    <units>B</units>
+                    <description>Total Storage</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>c6df06746480499e8bc23f02cf790db2</uuid>
+                    <name>Cluster Used Storage Capacity (percent)</name>
+                    <type>CALCULATED</type>
+                    <key>clusterUsedPStorageCapacity</key>
+                    <delay>30m</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <params>100*last(//clusterUsedStorageCapacity)/last(//clusterTotalStorageCapacity)</params>
+                    <description>Used Storage Percent</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>82eef5ebc4c443dd9ee8f8e8d81aeefb</uuid>
+                            <expression>last(/Nutanix Cluster/clusterUsedPStorageCapacity)&gt;80</expression>
+                            <name>Used storage is over than 80% on Nutanix Cluster</name>
+                            <priority>AVERAGE</priority>
+                            <dependencies>
+                                <dependency>
+                                    <name>Used storage is over than 90% on Nutanix Cluster</name>
+                                    <expression>last(/Nutanix Cluster/clusterUsedPStorageCapacity)&gt;90</expression>
+                                </dependency>
+                            </dependencies>
+                        </trigger>
+                        <trigger>
+                            <uuid>ae6b6e7f97004cfab761fce5b3d33c91</uuid>
+                            <expression>last(/Nutanix Cluster/clusterUsedPStorageCapacity)&gt;90</expression>
+                            <name>Used storage is over than 90% on Nutanix Cluster</name>
+                            <priority>HIGH</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <uuid>ea96f8f25fe94455a467bfc94e601f7f</uuid>
+                    <name>Cluster Used Storage Capacity</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41263.505.0</snmp_oid>
+                    <key>clusterUsedStorageCapacity</key>
+                    <delay>1h</delay>
+                    <units>B</units>
+                    <description>Used Storage</description>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>System</value>
+                        </tag>
+                    </tags>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>d87202c7e1a44e229f936a28695c7dc0</uuid>
+                    <name>Discovered Containers</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},NUTANIX-MIB::citContainerName]</snmp_oid>
+                    <key>citEntry</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>b878d0b2bc98466ab29f640b4d047e1c</uuid>
+                            <name>Container $1 Latency</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::citAvgLatencyUsecs.{#SNMPINDEX}</snmp_oid>
+                            <key>citAvgLatencyUsecs[{#SNMPVALUE}]</key>
+                            <units>ms</units>
+                            <description>Average IO latency for this container in microseconds</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>816cf422faca468683d91c3034ac4f14</uuid>
+                                    <expression>min(/Nutanix Cluster/citAvgLatencyUsecs[{#SNMPVALUE}],5m)&gt;10000</expression>
+                                    <name>Nutanix Container {#SNMPVALUE} latency is greater than 10 ms for 5 minutes</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>3a84fd4fa7b3452baab6dd066706750d</uuid>
+                            <name>Container $1 IOPS</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::citIOPerSecond.{#SNMPINDEX}</snmp_oid>
+                            <key>citIOPerSecond[{#SNMPVALUE}]</key>
+                            <units>iops</units>
+                            <description>Number of IO operations served per second from this container</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>be267915def64fc3b7927c28c7ae09e5</uuid>
+                            <name>Container $1 Total Storage Capacity</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::citTotalCapacity.{#SNMPINDEX}</snmp_oid>
+                            <key>citTotalCapacity[{#SNMPVALUE}]</key>
+                            <delay>4h</delay>
+                            <units>B</units>
+                            <description>Total capacity of the container in bytes</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>2084998aa3654808a44f9d5d4262d2f5</uuid>
+                            <name>Container $1 Used Storage Capacity</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::citUsedCapacity.{#SNMPINDEX}</snmp_oid>
+                            <key>citUsedCapacity[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <units>B</units>
+                            <description>Total capacity of the container in bytes</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>11a123f3861b4440a1b4babafc72b836</uuid>
+                            <name>Container $1 Used Storage (percent)</name>
+                            <type>CALCULATED</type>
+                            <key>citUsedPCapacity[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <params>100*last(//citUsedCapacity[{#SNMPVALUE}])/last(//citTotalCapacity[{#SNMPVALUE}])</params>
+                            <description>Used capacity of the container in %</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>07fc76ac7961436780c69a95733861ca</uuid>
+                                    <expression>last(/Nutanix Cluster/citUsedPCapacity[{#SNMPVALUE}])&gt;80</expression>
+                                    <name>Used storage is over 80% on Nutanix Container {#SNMPVALUE}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>f46b491ded7345e7b5cd43b96e9622a8</uuid>
+                                    <expression>last(/Nutanix Cluster/citUsedPCapacity[{#SNMPVALUE}])&gt;90</expression>
+                                    <name>Used storage is over 90% on Nutanix Container {#SNMPVALUE}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <uuid>ba00cb235002416d89e4766609e73e1f</uuid>
+                            <name>Nutanix Container {#SNMPVALUE} Performance</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>199C0D</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>citIOPerSecond[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>FFFF00</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>citAvgLatencyUsecs[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <uuid>0acfaaea2fb44577b9c890f24e60a9a1</uuid>
+                            <name>Nutanix Container {#SNMPVALUE} Storage</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>00FF00</color>
+                                    <calc_fnc>MIN</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>citUsedCapacity[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>5fd761fc3c104188aa14a836833d0d5b</uuid>
+                    <name>Discovered CVM</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},NUTANIX-MIB::cstControllerVMId]</snmp_oid>
+                    <key>CstEntry</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>c875361dfb1b457ba99f53079a29ba8a</uuid>
+                            <name>Status of CVM $1</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::cstControllerVMStatus.{#SNMPINDEX}</snmp_oid>
+                            <key>cstControllerVMStatus[{#SNMPVALUE}]</key>
+                            <delay>2m</delay>
+                            <value_type>TEXT</value_type>
+                            <trends>0</trends>
+                            <description>Status of the node</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>47f2502a391b4d679269547a8f6d9eeb</uuid>
+                                    <expression>last(/Nutanix Cluster/cstControllerVMStatus[{#SNMPVALUE}])=0</expression>
+                                    <name>Nuranix CVM {#SNMPVALUE} is down</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>512874d33d104dbeb39f9cc4903de923</uuid>
+                            <name>Data Status of CVM $1</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::cstDataServiceStatus.{#SNMPINDEX}</snmp_oid>
+                            <key>cstDataServiceStatus[{#SNMPVALUE}]</key>
+                            <delay>2m</delay>
+                            <value_type>TEXT</value_type>
+                            <trends>0</trends>
+                            <description>Status of core data services on the Controller VM</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>a847c0cd0af840599a693a5b724876e4</uuid>
+                                    <expression>last(/Nutanix Cluster/cstDataServiceStatus[{#SNMPVALUE}])=0</expression>
+                                    <name>Nutanix Core Data Service on CVM {#SNMPVALUE} is down</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>41de5708a2724f3dad81fea00b40ea31</uuid>
+                            <name>MetaData Status of CVM $1</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::cstMetadataServiceStatus.{#SNMPINDEX}</snmp_oid>
+                            <key>cstMetadataServiceStatus[{#SNMPVALUE}]</key>
+                            <delay>2m</delay>
+                            <value_type>TEXT</value_type>
+                            <trends>0</trends>
+                            <description>Status of metadata services on the Controller VM</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>946af5d5d4324dddb30472eeeb040e81</uuid>
+                                    <expression>last(/Nutanix Cluster/cstMetadataServiceStatus[{#SNMPVALUE}])=0</expression>
+                                    <name>Nutanix Metadata Service on CVM {#SNMPVALUE} is down</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>07b5dcf71060470f9f2513df6c85d5fb</uuid>
+                    <name>Discovered Disks</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},NUTANIX-MIB::dstControllerVMId]</snmp_oid>
+                    <key>dstControllerVMId</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>e8c4d34a043e43b3a07a39bd0a536ea0</uuid>
+                            <name>Disk {#SNMPINDEX} Average Latency</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstAverageLatency.{#SNMPINDEX}</snmp_oid>
+                            <key>dstAverageLatency[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>ms</units>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>8b700d4f8d084aa99557fcb5e9683678</uuid>
+                            <name>Disk {#SNMPINDEX} ID</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstDiskId.{#SNMPINDEX}</snmp_oid>
+                            <key>dstDiskId[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <value_type>CHAR</value_type>
+                            <trends>0</trends>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>023d412fe23341e9ab1f94cc2c9f663e</uuid>
+                            <name>Disk {#SNMPINDEX} IO Bandwidth</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstIOBandwidth.{#SNMPINDEX}</snmp_oid>
+                            <key>dstIOBandwidth[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>bps</units>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>71ee9e602f2c4e7c85907aa61f814acd</uuid>
+                            <name>Disk {#SNMPINDEX} IOPS</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumberIops.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumberIops[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>iops</units>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>8e490826b70b40ab9b34ca066ee5f63d</uuid>
+                            <name>Disk {#SNMPINDEX} Bytes Free</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumFreeBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumFreeBytes[{#SNMPVALUE}]</key>
+                            <delay>30m</delay>
+                            <history>7d</history>
+                            <units>bytes</units>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>9017cd6e898c4b039f5b14180ef65a44</uuid>
+                            <name>Disk {#SNMPINDEX} Inodes Free</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumFreeInodes.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumFreeInodes[{#SNMPVALUE}]</key>
+                            <delay>30m</delay>
+                            <history>7d</history>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>f0818a75df03426fb036e5ccb498a492</uuid>
+                            <name>Disk {#SNMPINDEX} Free Percent</name>
+                            <type>CALCULATED</type>
+                            <key>dstNumPFreeBytes[{#SNMPVALUE}]</key>
+                            <delay>30m</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <params>100*last(//dstNumFreeBytes[{#SNMPVALUE}])/last(//dstNumTotalBytes[{#SNMPVALUE}])</params>
+                            <description>Percentage of free space left on physical disk</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>243ba36a53e74cbca4a29baa8aed4d8e</uuid>
+                            <name>Disk {#SNMPINDEX} Bytes Raw</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumRawBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumRawBytes[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>bytes</units>
+                            <description>Maximum number of raw bytes available on the device</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>62e1cb7b7da444a9b360e99e6f387e6b</uuid>
+                            <name>Disk {#SNMPINDEX} Bytes Total</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumTotalBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumTotalBytes[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>bytes</units>
+                            <description>Total number of bytes usable on the device through its file system</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d1caee5064aa45298fbf7d90ea2265a3</uuid>
+                            <name>Disk {#SNMPINDEX} Inodes Total</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstNumTotalInodes.{#SNMPINDEX}</snmp_oid>
+                            <key>dstNumTotalInodes[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <description>Maximum number of inodes usable on the device through its file system</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>a34f58c5f2854eb28daa7fa4a53ea723</uuid>
+                            <name>Disk {#SNMPINDEX} State</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::dstState.{#SNMPINDEX}</snmp_oid>
+                            <key>dstState[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <value_type>CHAR</value_type>
+                            <trends>0</trends>
+                            <description>State of the disk. online 1 offline 2</description>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>1732fbcbf2464f39aeec21d745b05dd2</uuid>
+                                    <expression>last(/Nutanix Cluster/dstState[{#SNMPVALUE}])=2</expression>
+                                    <name>Nutanix Hard Drive {#SNMPINDEX} is offline</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>f73887994e114555b69bf623627152bd</uuid>
+                    <name>Discovered Hypervisors</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},NUTANIX-MIB::hypervisorName]</snmp_oid>
+                    <key>hypervisorEntry</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>148b70583ae54da585f41506c46f8080</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Latency</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorAverageLatency.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorAverageLatency[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>ms</units>
+                            <description>Average IO latency per micro seconds of the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>616e2c2801a746a793f907b6f3f8a77b</uuid>
+                            <name>Hypervisor {#SNMPVALUE} CPU Count</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorCpuCount.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorCpuCount[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <description>Total number of CPU threads present in the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>ec07034f593d4915b9fde1b717e7ff3e</uuid>
+                            <name>Hypervisor {#SNMPVALUE} CPU Usage</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorCpuUsagePercent.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorCpuUsagePercent[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <description>CPU usage percentage of the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>f97debee37514873b8dde3c13212b091</uuid>
+                            <name>Hypervisor {#SNMPVALUE} IO Bandwidth</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorIOBandwidth.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorIOBandwidth[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>bps</units>
+                            <description>IO bandwidth in KBps of the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>e7841d358ab54ace8214f0070b0901c3</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Memory Usage</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorMemoryUsagePercent.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorMemoryUsagePercent[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>%</units>
+                            <description>Memory usage percentage of the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>f2186e0141ec4f52a48c0147c3c402c0</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Memory</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorMemory.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorMemory[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <units>bytes</units>
+                            <description>Total memory available on the hypervisor in bytes</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>6dbc9cd5a1634ed99af710dbca43ff4e</uuid>
+                            <name>Hypervisor {#SNMPVALUE} IOPS Read</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorReadIOPerSecond.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorReadIOPerSecond[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>rps</units>
+                            <description>Number of read IO operations served per second on this hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>c60c84a7395c4f15bb81a733d8d3d84b</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Rx Bytes</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorRxBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorRxBytes[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>bps</units>
+                            <description>Total number of bytes recieved on the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>bea8aef6f71f490e84a9e0d4f7b3c817</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Rx Drop Count</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorRxDropCount.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorRxDropCount[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <description>Total number of packets dropped while receiving on the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>993e6653db20474a8a8a223bd6588e10</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Tx Bytes</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorTxBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorTxBytes[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>bps</units>
+                            <description>Total number of bytes transmitted from the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>8bf0db62a2164ad0ab36a2e25817eb3c</uuid>
+                            <name>Hypervisor {#SNMPVALUE} Tx Drop Count</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorTxDropCount.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorTxDropCount[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>bytes</units>
+                            <description>Total number of packets dropped while transmiting from hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>7ab2184cbc4c49f3bd5ad2951b412823</uuid>
+                            <name>Hypervisor {#SNMPVALUE} VMs Count</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorVmCount.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorVmCount[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>VMs</units>
+                            <description>Total number of VM configured on the hypervisor</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>5ca1daf742b5481d8b05a0171f62947b</uuid>
+                            <name>Hypervisor {#SNMPVALUE} IOPS Write</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::hypervisorWriteIOPerSecond.{#SNMPINDEX}</snmp_oid>
+                            <key>hypervisorWriteIOPerSecond[{#SNMPVALUE}]</key>
+                            <history>7d</history>
+                            <units>wps</units>
+                            <description>Number of write IO operations served per second on this hypervisor</description>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <uuid>a3cb95366b754eb098ff9a8cebb832b9</uuid>
+                            <name>Nutanix Hypervisor {#SNMPVALUE} IOPS</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>00FF00</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorReadIOPerSecond[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>0040FF</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorWriteIOPerSecond[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                        <graph_prototype>
+                            <uuid>8d38bccf931349b682b55bb452cbc179</uuid>
+                            <name>Nutanix Hypervisor {#SNMPVALUE} Network Traffic</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>00FF00</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorRxBytes[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>FF0000</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorRxDropCount[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>0040FF</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorTxBytes[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <color>6A1B9A</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Nutanix Cluster</host>
+                                        <key>hypervisorTxDropCount[{#SNMPVALUE}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+                <discovery_rule>
+                    <uuid>79f7c77e64a14558be1e7ba4cef8fe53</uuid>
+                    <name>Discovered Virtual Machines</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>discovery[{#SNMPVALUE},NUTANIX-MIB::vmName]</snmp_oid>
+                    <key>vmEntry</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>c4e6d132b2af4fe585545e689550766c</uuid>
+                            <name>{#SNMPVALUE} Latency</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmAverageLatency.{#SNMPINDEX}</snmp_oid>
+                            <key>vmAverageLatency[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>ms</units>
+                            <description>Average IO latency per micro seconds of the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>2ef92a3dfc9e4accb0b2854589ddcd62</uuid>
+                            <name>{#SNMPVALUE} VM CPU Count</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmCpuCount.{#SNMPINDEX}</snmp_oid>
+                            <key>vmCpuCount[{#SNMPVALUE}]</key>
+                            <delay>30m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>ms</units>
+                            <description>Total number of CPUs allocated to the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>b8b7cfc8e0a947638da8304f8a73800a</uuid>
+                            <name>{#SNMPVALUE} VM CPU Usage</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmCpuUsagePercent.{#SNMPINDEX}</snmp_oid>
+                            <key>vmCpuUsagePercent[{#SNMPVALUE}]</key>
+                            <delay>2m</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <trends>182d</trends>
+                            <units>%</units>
+                            <description>CPU usage percentage of the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>316bf9dc061d411697aa9225deabe625</uuid>
+                            <name>{#SNMPVALUE} VM Hypervisor ID</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmHypervisorId.{#SNMPINDEX}</snmp_oid>
+                            <key>vmHypervisorId[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>90d</history>
+                            <value_type>CHAR</value_type>
+                            <trends>0</trends>
+                            <description>Hypervisor id on which the VM resides</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>8180ee0e53314d95bf7f3227ac88fcf7</uuid>
+                            <name>{#SNMPVALUE} VM ID</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmId.{#SNMPINDEX}</snmp_oid>
+                            <key>vmId[{#SNMPVALUE}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <value_type>CHAR</value_type>
+                            <trends>0</trends>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d8c0834927a8422ab5392ecd0a877fb9</uuid>
+                            <name>{#SNMPVALUE} IO Bandwidth</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmIOBandwidth.{#SNMPINDEX}</snmp_oid>
+                            <key>vmIOBandwidth[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>bps</units>
+                            <description>IO bandwidth in KBps of the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>5c1fc15e13244a74aac5ee1f2e296fa8</uuid>
+                            <name>{#SNMPVALUE} VM Memory Usage</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmMemoryUsagePercent.{#SNMPINDEX}</snmp_oid>
+                            <key>vmMemoryUsagePercent[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <value_type>FLOAT</value_type>
+                            <trends>182d</trends>
+                            <units>%</units>
+                            <description>Memory usage percentage of the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>1e10db33e4e64471b46dd8b67de6bcba</uuid>
+                            <name>{#SNMPVALUE} VM Memory</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmMemory.{#SNMPINDEX}</snmp_oid>
+                            <key>vmMemory[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>bytes</units>
+                            <description>Total memory available on the VM in bytes</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>3853129fc06a4e82bd9a0fbe75c68540</uuid>
+                            <name>{#SNMPVALUE} VM Power State</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmPowerState.{#SNMPINDEX}</snmp_oid>
+                            <key>vmPowerState[{#SNMPVALUE}]</key>
+                            <delay>30m</delay>
+                            <history>7d</history>
+                            <value_type>CHAR</value_type>
+                            <trends>0</trends>
+                            <description>Power state of the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>2c49b9195e344976aeed14f544452c2e</uuid>
+                            <name>{#SNMPVALUE} IOPS Read</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmReadIOPerSecond.{#SNMPINDEX}</snmp_oid>
+                            <key>vmReadIOPerSecond[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>iops</units>
+                            <description>Number of Read IO operations served per second on this VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>dbd601a800f4458b8f43f095c6ce6e39</uuid>
+                            <name>{#SNMPVALUE} Bytes Received</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmRxBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>vmRxBytes[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>bytes</units>
+                            <description>Total number of bytes recieved on the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>375d9dc77360464b99eff7b105da0820</uuid>
+                            <name>{#SNMPVALUE} Dropped Bytes Received</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmRxDropCount.{#SNMPINDEX}</snmp_oid>
+                            <key>vmRxDropCount[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>packets</units>
+                            <description>Total number of packets dropped while receiving on the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>7b10668cac4b49b6a8bc8de8c0504148</uuid>
+                            <name>{#SNMPVALUE} Bytes Transmitted</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmTxBytes.{#SNMPINDEX}</snmp_oid>
+                            <key>vmTxBytes[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>bytes</units>
+                            <description>Total number of bytes transmitted from the VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>73763cffb4fb44b4a8523afe20879289</uuid>
+                            <name>{#SNMPVALUE} Dropped Bytes Transmitted</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmTxDropCount.{#SNMPINDEX}</snmp_oid>
+                            <key>vmTxDropCount[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>packets</units>
+                            <description>Total number of packets dropped while transmiting from VM</description>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d27fb87c9f104efdaf2a35621757bc4a</uuid>
+                            <name>{#SNMPVALUE} IOPS Write</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>NUTANIX-MIB::vmWriteIOPerSecond.{#SNMPINDEX}</snmp_oid>
+                            <key>vmWriteIOPerSecond[{#SNMPVALUE}]</key>
+                            <delay>5m</delay>
+                            <history>7d</history>
+                            <trends>182d</trends>
+                            <units>iops</units>
+                            <description>Number of Write IO operations served per second on this VM</description>
+                        </item_prototype>
+                    </item_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <uuid>b21c2894d12647b8b709ede91360371b</uuid>
+            <name>Nutanix Cluster Performance</name>
+            <graph_items>
+                <graph_item>
+                    <color>00FF00</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Nutanix Cluster</host>
+                        <key>clusterIops</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>FF0000</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Nutanix Cluster</host>
+                        <key>clusterLatency</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <uuid>f948633046d24380b0ebb574599d6cd8</uuid>
+            <name>Nutanix Cluster Storage</name>
+            <graph_items>
+                <graph_item>
+                    <color>FF0000</color>
+                    <calc_fnc>ALL</calc_fnc>
+                    <item>
+                        <host>Nutanix Cluster</host>
+                        <key>clusterUsedStorageCapacity</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
